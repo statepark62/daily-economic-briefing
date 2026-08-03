@@ -39,10 +39,13 @@ def generate_weekly_report(data: dict) -> str:
 5. 앞으로 대비 방향에 대해 고려해볼 점 — "지금 이런 상황이니, 이런 부분들을 한 번쯤 점검해보면 좋다"는
    식으로 2~4가지 정도, 구체적 종목이나 확정적 매수/매도 지시 없이 제시 (예: 환율 변동에 따른 환헤지 상품
    점검, 금리 국면에 따른 예금·채권 비중 재점검, 분산투자 원칙 재확인 등 일반적으로 고려되는 방향)
+
+위 5개 항목을 모두 빠짐없이 포함해서 작성해주세요. 각 항목은 간결하게 쓰되, 중간에 끊기지 않도록 전체
+분량을 조절해주세요.
 """
     msg = client.messages.create(
         model="claude-sonnet-4-6",
-        max_tokens=1500,
+        max_tokens=3000,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": prompt}],
     )
