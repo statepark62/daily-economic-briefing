@@ -1,0 +1,31 @@
+name: Retrofit Back Link (One-time)
+
+on:
+  workflow_dispatch: {}   # 수동 실행 전용 — 스케줄 없음
+
+jobs:
+  retrofit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Retrofit existing report pages
+        run: python scripts/retrofit_back_link.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs
+          if ! git diff --cached --quiet; then
+            git commit -m "기존 리포트에 뒤로가기 링크 소급 적용"
+            git push
+          else
+            echo "변경사항 없음"
+          fi
