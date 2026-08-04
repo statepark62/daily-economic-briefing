@@ -1,0 +1,20 @@
+{
+  "name": "경제 브리핑 아카이브",
+  "short_name": "경제 브리핑",
+  "start_url": "/daily-economic-briefing/",
+  "display": "standalone",
+  "background_color": "#f4f5f7",
+  "theme_color": "#1a2b4c",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
