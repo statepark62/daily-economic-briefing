@@ -12,9 +12,9 @@ def render_report_html(title: str, subtitle: str, body_markdown: str) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="apple-touch-icon" href="/daily-economic-briefing/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/daily-economic-briefing/favicon-32.png">
-<link rel="shortcut icon" href="/daily-economic-briefing/favicon.ico">
+<link rel="apple-touch-icon" href="/daily-economic-briefing/apple-touch-icon.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="/daily-economic-briefing/favicon-32.png?v=2">
+<link rel="shortcut icon" href="/daily-economic-briefing/favicon.ico?v=2">
 <meta name="theme-color" content="#1a2b4c">
 <style>
   body {{
