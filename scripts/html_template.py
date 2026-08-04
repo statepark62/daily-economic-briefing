@@ -11,6 +11,10 @@ def render_report_html(title: str, subtitle: str, body_markdown: str) -> str:
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="/daily-economic-briefing/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/daily-economic-briefing/favicon-32.png">
+<meta name="theme-color" content="#1a2b4c">
 <style>
   body {{
     font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
