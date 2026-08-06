@@ -40,6 +40,18 @@ def render_report_html(title: str, subtitle: str, body_markdown: str) -> str:
     color: #ffffff;
     padding: 28px 28px 22px 28px;
   }}
+  .back-link {{
+    display: inline-block;
+    color: #ffffff;
+    opacity: 0.85;
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }}
+  .back-link:hover {{
+    opacity: 1;
+    text-decoration: underline;
+  }}
   .header h1 {{
     margin: 0 0 6px 0;
     font-size: 22px;
@@ -102,6 +114,7 @@ def render_report_html(title: str, subtitle: str, body_markdown: str) -> str:
   <div class="wrapper">
     <div class="card">
       <div class="header">
+        <a class="back-link" href="../../index.html">← 목록으로</a>
         <h1>{title}</h1>
         <p>{subtitle}</p>
       </div>
