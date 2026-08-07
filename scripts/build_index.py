@@ -62,11 +62,20 @@ def build_index():
   }}
   a:hover {{ background:#eef1f6; }}
   .empty {{ color:#888; }}
+  .trends-link {{
+    display: block;
+    text-align: center;
+    background: linear-gradient(135deg, #1a2b4c, #2c4a7c) !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    margin-bottom: 24px;
+  }}
 </style>
 </head>
 <body>
 <div class="wrapper">
   <h1>경제 브리핑 아카이브</h1>
+  <a class="trends-link" href="trends.html">📈 지표 추이 그래프 보기</a>
   <h2>주간 심층 브리핑</h2>
   {_render_list(weekly_files, "reports/weekly", "주간 브리핑")}
   <h2>일일 속보</h2>

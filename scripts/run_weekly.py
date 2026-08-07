@@ -5,10 +5,13 @@ from fetch_data import collect_all
 from analyze import generate_weekly_report
 from html_template import render_report_html
 from build_index import build_index
+from history import append_history
 
 
 def main():
     data = collect_all()
+    append_history(data)
+
     report_md = generate_weekly_report(data)
 
     today = datetime.utcnow().strftime("%Y-%m-%d")

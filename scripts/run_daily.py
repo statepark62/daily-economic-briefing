@@ -5,6 +5,7 @@ from fetch_data import collect_all
 from analyze import generate_daily_alert
 from html_template import render_report_html
 from build_index import build_index
+from history import append_history
 
 # 조건 임계값 (필요에 따라 조정하세요)
 THRESHOLDS = {
@@ -28,10 +29,14 @@ def check_conditions(market: dict):
 
 def main():
     data = collect_all()
+
+    # 속보 발송 여부와 상관없이, 차트용 데이터는 매일 기록해둔다.
+    append_history(data)
+
     triggered = check_conditions(data.get("market", {}))
 
     if not triggered:
-        print("조건 미충족 — 오늘은 속보 페이지를 만들지 않습니다.")
+        print("조건 미충족 — 오늘은 속보 페이지를 만들지 않습니다. (history는 기록됨)")
         return
 
     alert_md = generate_daily_alert(data, triggered)
