@@ -28,9 +28,12 @@ def append_history(data: dict):
         "usd_krw": market.get("USD_KRW", {}).get("latest"),
         "dxy": market.get("DXY", {}).get("latest"),
         "kospi": market.get("KOSPI", {}).get("latest"),
+        "kosdaq": market.get("KOSDAQ", {}).get("latest"),
         "sp500": market.get("SP500", {}).get("latest"),
         "fed_funds_rate": _latest_value(data.get("fed_funds_rate")),
         "kr_base_rate": _latest_value(data.get("kr_base_rate")),
+        "us_10y_treasury": _latest_value(data.get("us_10y_treasury")),
+        "us_cpi": _latest_value(data.get("us_cpi")),
     }
 
     os.makedirs(os.path.dirname(HISTORY_PATH), exist_ok=True)

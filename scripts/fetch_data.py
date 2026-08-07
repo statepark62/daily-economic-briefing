@@ -58,12 +58,25 @@ def fetch_ecos_base_rate():
         return []
 
 
+# 하루 변동률로는 현실적으로 나오기 어려운 상한선.
+# 이 값을 넘으면 실제 시장 변동이 아니라 데이터 오류(휴장일 비교, 캐시 이상 등)일 가능성이 높다고 보고 제외한다.
+MAX_PLAUSIBLE_CHANGE_PCT = {
+    "USD_KRW": 5.0,
+    "DXY": 3.0,
+    "KOSPI": 10.0,   # 코스피 서킷브레이커 1단계가 8%이므로 그 이상은 사실상 데이터 오류
+    "SP500": 8.0,
+    "KOSDAQ": 12.0,  # 코스닥은 코스피보다 변동성이 커서 상한선을 조금 더 넉넉히 둠
+}
+
+
 def fetch_market_data():
-    """yfinance로 환율/지수 최근 2거래일 종가를 가져온다."""
+    """yfinance로 환율/지수 최근 2거래일 종가를 가져온다.
+    비현실적으로 큰 변동치는 데이터 오류로 간주해 결과에서 제외한다."""
     tickers = {
         "USD_KRW": "KRW=X",
         "DXY": "DX-Y.NYB",
         "KOSPI": "^KS11",
+        "KOSDAQ": "^KQ11",
         "SP500": "^GSPC",
     }
     result = {}
@@ -71,14 +84,26 @@ def fetch_market_data():
         try:
             hist = yf.Ticker(ticker).history(period="5d")
             closes = hist["Close"].dropna()
-            if len(closes) >= 2:
-                result[name] = {
-                    "latest": round(float(closes.iloc[-1]), 2),
-                    "prev": round(float(closes.iloc[-2]), 2),
-                    "change_pct": round(
-                        (closes.iloc[-1] - closes.iloc[-2]) / closes.iloc[-2] * 100, 2
-                    ),
-                }
+            if len(closes) < 2:
+                continue
+
+            latest = float(closes.iloc[-1])
+            prev = float(closes.iloc[-2])
+            change_pct = round((latest - prev) / prev * 100, 2)
+
+            limit = MAX_PLAUSIBLE_CHANGE_PCT.get(name, 10.0)
+            if abs(change_pct) > limit:
+                print(
+                    f"[yfinance] {name} 변동률 {change_pct}%가 상한({limit}%)을 초과 — "
+                    f"데이터 오류로 판단해 이번 수집에서 제외합니다 (latest={latest}, prev={prev})"
+                )
+                continue
+
+            result[name] = {
+                "latest": round(latest, 2),
+                "prev": round(prev, 2),
+                "change_pct": change_pct,
+            }
         except Exception as e:
             print(f"[yfinance] {name} 조회 실패: {e}")
     return result
