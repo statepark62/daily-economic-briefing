@@ -61,13 +61,18 @@
   </div>
 
   <div class="card">
-    <h2>코스피 · S&amp;P500</h2>
+    <h2>코스피 · 코스닥 · S&amp;P500</h2>
     <canvas id="indexChart"></canvas>
   </div>
 
   <div class="card">
-    <h2>기준금리 (미국 vs 한국)</h2>
+    <h2>기준금리(미국·한국) · 미국 10년물 국채금리</h2>
     <canvas id="rateChart"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>미국 소비자물가지수(CPI)</h2>
+    <canvas id="cpiChart"></canvas>
   </div>
 
   <div id="emptyState" class="empty" style="display:none;">
@@ -87,6 +92,12 @@ async function loadHistory() {
 }
 
 function makeChart(canvasId, labels, datasets, dualAxis) {
+  datasets.forEach(ds => {
+    ds.pointRadius = ds.pointRadius ?? 4;
+    ds.pointHoverRadius = ds.pointHoverRadius ?? 6;
+    ds.tension = ds.tension ?? 0.25;
+  });
+
   const ctx = document.getElementById(canvasId).getContext('2d');
   const scales = { x: { ticks: { maxRotation: 45, minRotation: 45 } } };
 
@@ -107,22 +118,35 @@ function makeChart(canvasId, labels, datasets, dualAxis) {
   });
 }
 
+function showDebug(message) {
+  const el = document.getElementById('emptyState');
+  el.style.display = 'block';
+  el.style.whiteSpace = 'pre-wrap';
+  el.style.textAlign = 'left';
+  el.style.fontFamily = 'monospace';
+  el.style.fontSize = '12px';
+  el.textContent = message;
+}
+
+window.addEventListener('error', (e) => {
+  showDebug('스크립트 오류 발생:\n' + e.message + '\n(' + e.filename + ':' + e.lineno + ')');
+});
+
 (async () => {
-  if (typeof Chart === 'undefined') {
-    document.getElementById('emptyState').style.display = 'block';
-    document.getElementById('emptyState').textContent =
-      '그래프 라이브러리(Chart.js)를 불러오지 못했습니다. 네트워크 연결이나 광고 차단 확장 프로그램을 확인해주세요.';
-    return;
-  }
+  try {
+    if (typeof Chart === 'undefined') {
+      showDebug('그래프 라이브러리(Chart.js)를 불러오지 못했습니다. 네트워크 연결이나 광고 차단 확장 프로그램을 확인해주세요.');
+      return;
+    }
 
-  const history = await loadHistory();
+    const history = await loadHistory();
 
-  if (!history.length) {
-    document.getElementById('emptyState').style.display = 'block';
-    return;
-  }
+    if (!history.length) {
+      showDebug('history.json은 불러왔지만 데이터가 비어있습니다.');
+      return;
+    }
 
-  const labels = history.map(h => h.date);
+    const labels = history.map(h => h.date);
 
   makeChart('fxChart', labels, [
     {
@@ -153,6 +177,14 @@ function makeChart(canvasId, labels, datasets, dualAxis) {
       yAxisID: 'y'
     },
     {
+      label: '코스닥',
+      data: history.map(h => h.kosdaq),
+      borderColor: '#3fa34d',
+      backgroundColor: 'rgba(63,163,77,0.1)',
+      spanGaps: true,
+      yAxisID: 'y'
+    },
+    {
       label: 'S&P500',
       data: history.map(h => h.sp500),
       borderColor: '#e2543a',
@@ -176,8 +208,28 @@ function makeChart(canvasId, labels, datasets, dualAxis) {
       borderColor: '#e2543a',
       backgroundColor: 'rgba(226,84,58,0.1)',
       spanGaps: true
+    },
+    {
+      label: '미국 10년물 국채금리(%)',
+      data: history.map(h => h.us_10y_treasury),
+      borderColor: '#3fa34d',
+      backgroundColor: 'rgba(63,163,77,0.1)',
+      spanGaps: true
     }
   ]);
+
+  makeChart('cpiChart', labels, [
+    {
+      label: '미국 CPI 지수',
+      data: history.map(h => h.us_cpi),
+      borderColor: '#1a2b4c',
+      backgroundColor: 'rgba(26,43,76,0.1)',
+      spanGaps: true
+    }
+  ]);
+  } catch (e) {
+    showDebug('차트 렌더링 중 오류 발생:\n' + e.message);
+  }
 })();
 </script>
 </body>
