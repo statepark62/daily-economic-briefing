@@ -358,5 +358,17 @@
     "kr_base_rate": 2.75,
     "us_10y_treasury": 4.78,
     "us_cpi": 332.813
+  },
+  {
+    "date": "2026-09-09",
+    "usd_krw": 1340.1,
+    "dxy": 98.78,
+    "kospi": 6954.52,
+    "kosdaq": 811.88,
+    "sp500": 7636.36,
+    "fed_funds_rate": 3.63,
+    "kr_base_rate": 2.75,
+    "us_10y_treasury": 4.8,
+    "us_cpi": 332.813
   }
 ]
