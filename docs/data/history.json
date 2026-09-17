@@ -445,14 +445,14 @@
   },
   {
     "date": "2026-09-17",
-    "usd_krw": 1374.98,
-    "dxy": 100.26,
-    "kospi": 6627.26,
-    "kosdaq": 812.41,
-    "sp500": 7551.81,
+    "usd_krw": 1380.38,
+    "dxy": 100.23,
+    "kospi": 6717.97,
+    "kosdaq": 815.98,
+    "sp500": 7637.76,
     "fed_funds_rate": 3.63,
     "kr_base_rate": 2.75,
-    "us_10y_treasury": 5.0,
+    "us_10y_treasury": 5.01,
     "us_cpi": 334.131
   }
 ]
